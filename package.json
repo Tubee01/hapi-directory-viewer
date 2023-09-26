@@ -1,0 +1,35 @@
+{
+  "name": "hapi-file-viewer",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "license": "MIT",
+  "author": "Bence Tamási <tamasi.bence@outlook.com>",
+  "scripts": {
+    "pre:build": "rimraf dist",
+    "start": "node dist/main.ts",
+    "build": "npm run pre:build && tsc -p tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@types/hapi__yar": "^10.1.3",
+    "@types/node": "^20.6.5",
+    "@types/qrcode": "^1.5.2",
+    "@types/speakeasy": "^2.0.7",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@hapi/hapi": "^21.3.2",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/yar": "^11.0.1",
+    "dotenv": "^16.3.1",
+    "joi": "^17.10.2",
+    "qrcode": "^1.5.3",
+    "rimraf": "^5.0.1",
+    "speakeasy": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
