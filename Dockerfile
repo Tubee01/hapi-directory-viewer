@@ -1,13 +1,17 @@
 
 FROM node:lts-alpine as node-builder
 
+RUN npm i -g pnpm
+
 # install
 FROM node-builder as install
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci
+COPY pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile
 
 # build
 FROM  node-builder as build
@@ -19,9 +23,9 @@ COPY --from=install /app .
 
 COPY tsconfig*.json ./
 
-RUN npm run build
+RUN pnpm run build
 
-RUN npm install --omit=dev
+RUN pnpm install --production --frozen-lockfile
 
 # production
 FROM node-builder as production
