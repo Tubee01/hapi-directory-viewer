@@ -89,7 +89,7 @@ export const TwoFactorAuthPlugin = ({
                     }
 
                     return h.response(`
-                        <form method="POST" action="/2fa-verify">
+                        <form method="POST" action="2fa-verify">
                             <input type="text" name="token" placeholder="Enter 2FA token">
                             <button type="submit">Submit</button>
                         </form>
