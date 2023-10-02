@@ -10,6 +10,7 @@ import env from './utils/env';
 
 const server = hapi.server({
   port: env.APP_PORT,
+  host: env.APP_DOMAIN,
 });
 
 const YAR_OPTIONS = {
