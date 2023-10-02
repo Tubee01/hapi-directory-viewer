@@ -17,22 +17,26 @@ const YAR_OPTIONS = {
   storeBlank: false,
   cookieOptions: {
     password: process.env.YAR_SECRET,
-    isSecure: true
+    isSecure: env.APP_DOMAIN ? new URL(env.APP_DOMAIN).protocol === 'https:' : false,
   }
 };
 
 const init = async () => {
   await server.register(inert);
+
   await server.register({
     plugin: yar as Plugin<unknown>,
     options: YAR_OPTIONS
   });
+
   await server.register({
     plugin: TwoFactorAuthPlugin,
     options: ({
-      secret: env.TWO_FA_SECRET,
-      label: env.TWO_FA_LABEL,
-      issuer: env.TWO_FA_ISSUER,
+      oauth: {
+        secret: env.TWO_FA_SECRET,
+        label: env.TWO_FA_LABEL,
+        issuer: env.TWO_FA_ISSUER,
+      },
     })
   });
 
@@ -46,7 +50,7 @@ const init = async () => {
 
   server.route({
     method: 'GET',
-    path: '/{param*}',
+    path: `${server.settings.uri ? new URL(server.settings.uri).pathname : ''}/{param*}`,
     handler: {
       directory: {
         path: directory,
@@ -60,7 +64,7 @@ const init = async () => {
   });
 
   await server.start();
-  console.log('Server running on %s', server.info.uri);
+  console.debug('Server running on %s', server.info.uri);
 };
 
 server.ext('onPreResponse', (request, h) => {
@@ -74,13 +78,13 @@ server.ext('onPreResponse', (request, h) => {
     }
   }
 
+
   return h.continue;
 });
 
 
-
 process.on('unhandledRejection', (err) => {
-  console.log(err);
+  console.error(err);
   process.exit(1);
 });
 

@@ -15,7 +15,7 @@ export interface Environment extends NodeJS.ProcessEnv {
 
 const joiSchema = Joi.object<Environment>({
     APP_PORT: Joi.number().default(3000),
-    APP_DOMAIN: Joi.string().default('localhost'),
+    APP_DOMAIN: Joi.string(),
     YAR_SECRET: Joi.string().required(),
     TWO_FA_SECRET: Joi.string().required(),
     TWO_FA_LABEL: Joi.string().required(),
