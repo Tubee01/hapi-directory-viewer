@@ -7,6 +7,7 @@
   "author": "Bence Tamási <tamasi.bence@outlook.com>",
   "scripts": {
     "pre:build": "rimraf dist",
+    "dev": "tsnd .", 
     "start": "node dist/main.ts",
     "build": "npm run pre:build && tsc -p tsconfig.build.json"
   },
@@ -26,10 +27,12 @@
     "joi": "^17.10.2",
     "qrcode": "^1.5.3",
     "rimraf": "^5.0.1",
-    "speakeasy": "^2.0.0"
+    "speakeasy": "^2.0.0",
+    "ts-node-dev": "^2.0.0"
   },
   "engines": {
     "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "npm": ">=8.0.0",
+    "pnpm": ">=8.0.0"
   }
 }
