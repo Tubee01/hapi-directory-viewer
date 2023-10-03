@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get current branch
+        id: current_branch
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Release
+        uses: google-github-actions/release-please-action@v3.7.1
+        with:
+          release-type: node
+          default-branch: ${{ steps.current_branch.outputs.branch }}
+          bump-minor-pre-major: true
+          bump-patch-for-minor-pre-major: true
