@@ -3,17 +3,21 @@ import { config } from 'dotenv';
 
 config();
 
-export interface Environment extends NodeJS.ProcessEnv {
-    APP_PORT: string;
-    APP_DOMAIN: string;
+export interface Environment extends Pick<NodeJS.ProcessEnv, 'NODE_ENV' | 'TZ'> {
+    APP_PORT: number;
+    APP_DOMAIN?: string;
     YAR_SECRET: string;
     TWO_FA_SECRET: string;
     TWO_FA_LABEL: string;
     TWO_FA_ISSUER: string;
     APP_PUBLIC_DIR: string;
+    APP_ROUTE_PREFIX?: string;
+    AUTH_REDIRECT_URL?: string;
 }
 
 const joiSchema = Joi.object<Environment>({
+    NODE_ENV: Joi.string().default('development'),
+    TZ: Joi.string().default('UTC'),
     APP_PORT: Joi.number().default(3000),
     APP_DOMAIN: Joi.string(),
     YAR_SECRET: Joi.string().required(),
@@ -21,8 +25,12 @@ const joiSchema = Joi.object<Environment>({
     TWO_FA_LABEL: Joi.string().required(),
     TWO_FA_ISSUER: Joi.string().required(),
     APP_PUBLIC_DIR: Joi.string().default('public'),
+    APP_ROUTE_PREFIX: Joi.string(),
+    AUTH_REDIRECT_URL: Joi.string(),
 }).options({
     allowUnknown: true,
+    convert: true,
+    stripUnknown: true,
 });
 
 

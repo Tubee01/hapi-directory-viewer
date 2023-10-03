@@ -7,6 +7,7 @@ import fs from 'fs/promises';
 import { Boom } from '@hapi/boom';
 import env from './utils/env';
 
+const APP_ROUTE_PREFIX = env.APP_ROUTE_PREFIX;
 
 const server = hapi.server({
   port: env.APP_PORT,
@@ -30,15 +31,20 @@ const init = async () => {
   });
 
   await server.register({
-    plugin: TwoFactorAuthPlugin,
+    plugin: TwoFactorAuthPlugin as Plugin<unknown>,
     options: ({
       oauth: {
         secret: env.TWO_FA_SECRET,
         label: env.TWO_FA_LABEL,
         issuer: env.TWO_FA_ISSUER,
       },
+      redirect: env.AUTH_REDIRECT_URL ?? env.APP_ROUTE_PREFIX ?? '/',
     })
-  });
+  }, APP_ROUTE_PREFIX ? {
+    routes: {
+      prefix: APP_ROUTE_PREFIX,
+    }
+  } : undefined);
 
   server.auth.strategy('simple', '2fa');
 
@@ -50,14 +56,13 @@ const init = async () => {
 
   server.route({
     method: 'GET',
-    path: `${server.settings.uri ? new URL(server.settings.uri).pathname : ''}/{param*}`,
+    path: `${APP_ROUTE_PREFIX ?? '' }/{param*}`,
     handler: {
       directory: {
         path: directory,
         listing: true,
         etagMethod: 'simple',
         lookupCompressed: true,
-        redirectToSlash: true,
         showHidden: false,
       },
     },
