@@ -50,19 +50,22 @@ const init = async () => {
 
   server.auth.default('simple');
 
-  const directory = path.join(__dirname, env.APP_PUBLIC_DIR);
+  const directory = path.resolve(env.APP_PUBLIC_DIR)
+
+  console.debug(`Serving static files from ${directory}`);
 
   await fs.mkdir(directory, { recursive: true });
 
   server.route({
     method: 'GET',
-    path: `${APP_ROUTE_PREFIX ?? '' }/{param*}`,
+    path: `${APP_ROUTE_PREFIX ?? ''}/{param*}`,
     handler: {
       directory: {
         path: directory,
         listing: true,
         etagMethod: 'simple',
         lookupCompressed: true,
+        redirectToSlash: true,
         showHidden: false,
       },
     },

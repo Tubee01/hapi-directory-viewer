@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { config } from 'dotenv';
+import path from "path";
 
 config();
 
@@ -24,7 +25,7 @@ const joiSchema = Joi.object<Environment>({
     TWO_FA_SECRET: Joi.string().required(),
     TWO_FA_LABEL: Joi.string().required(),
     TWO_FA_ISSUER: Joi.string().required(),
-    APP_PUBLIC_DIR: Joi.string().default('public'),
+    APP_PUBLIC_DIR: Joi.string().default(path.join(process.cwd(), 'public')),
     APP_ROUTE_PREFIX: Joi.string(),
     AUTH_REDIRECT_URL: Joi.string(),
 }).options({
