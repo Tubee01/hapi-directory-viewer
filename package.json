@@ -1,13 +1,13 @@
 {
   "name": "hapi-file-viewer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "src/main.ts",
   "license": "MIT",
   "author": "Bence Tamási <tamasi.bence@outlook.com>",
   "scripts": {
     "pre:build": "rimraf dist",
-    "dev": "tsnd .", 
+    "dev": "tsnd .",
     "start": "node dist/main.ts",
     "build": "npm run pre:build && tsc -p tsconfig.build.json"
   },
