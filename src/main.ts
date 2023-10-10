@@ -50,7 +50,7 @@ const init = async () => {
 
   server.auth.default('simple');
 
-  const directory = path.resolve(env.APP_PUBLIC_DIR)
+  const directory = path.join('.', env.APP_PUBLIC_DIR);
 
   console.debug(`Serving static files from ${directory}`);
 
